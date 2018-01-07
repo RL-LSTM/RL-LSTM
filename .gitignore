@@ -99,3 +99,9 @@ ENV/
 
 # mypy
 .mypy_cache/
+
+# Compiled python modules.
+*.pyc
+
+# MacFile
+.DS_Store

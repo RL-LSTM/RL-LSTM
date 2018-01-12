@@ -77,7 +77,7 @@ if __name__ == '__main__':
 	parser.add_argument('--noise_std', type=float, default=0.20, help='noide standard deviation')
 	parser.add_argument('--noise_decay', type=int, default=25, help='linear decrease in noise')
 	parser.add_argument('--is_train', type=bool, default=False, help='train mode or test mode. Default is test mode')
-	parser.add_argument('--actor_weights', type=str, default='actor_pendulum', help='Filename of actor weights. Default is actor_pendulum')
+	parser.add_argument('--actor_weights', type=str, default='ddpg_pendulum', help='Filename of actor weights. Default is actor_pendulum')
 	args = parser.parse_args()
 
 	main(args)

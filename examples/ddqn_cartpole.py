@@ -16,7 +16,7 @@ from torch.autograd import Variable
 import torch.nn.init as weight_init
 
 from rl.agents import DDQNAgent
-from rl.models.dqn import CriticNetwork
+from rl.models.ddqn import CriticNetwork
 from rl.common.replaybuffer import ReplayBuffer
 
 def main(args):

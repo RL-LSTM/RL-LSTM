@@ -64,7 +64,7 @@ if __name__ == '__main__':
 	parser.add_argument('--epsilon', type=float, default=0.01, help='noide standard deviation')
 	parser.add_argument('--epsilon_decay', type=float, default=0.999, help='noide standard deviation')
 	parser.add_argument('--is_train', type=bool, default=False, help='train mode or test mode. Default is test mode')
-	parser.add_argument('--actor_weights', type=str, default='actor_cartpole', help='Filename of actor weights. Default is actor_pendulum')
+	parser.add_argument('--actor_weights', type=str, default='ddqn_cartpole', help='Filename of actor weights. Default is actor_pendulum')
 	args = parser.parse_args()
 
 	main(args)

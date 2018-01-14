@@ -86,6 +86,7 @@ class DDQNAgent:
 					arg_out = arg_out.data.numpy().astype(int)
 					critic_output =  critic_output[:,arg_out]
 					critic_output = critic_output.data.cpu().numpy()
+					print critic_output
 					y = r_batch + self.gamma * critic_output * ~t_batch					
 					s_batch = torch.from_numpy(s_batch)
 					s_batch = Variable(s_batch.type(torch.FloatTensor),requires_grad=True)

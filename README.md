@@ -1,12 +1,11 @@
 # pytorch-rl
 ## DDPG 
-Un-Trained		           | Trained
-:-------------------------:|:-------------------------:
-<img src="./assets/pendulum_untrained.gif" width="200">  |  <img src="./assets/pendulum_trained.gif" width="200">
-## Double DQN
-Un-Trained		           | Trained
-:-------------------------:|:-------------------------:
-<img src="./assets/cartpole_untrained.gif" width="200">  |  <img src="./assets/cartpole_trained.gif" width="200">
+
+| | Un-Trained | Trained |
+|----|--------------|------|
+|DDPG|![pendulum untrained](/assets/pendulum_untrained.gif)  |![pendulum trained](/assets/pendulum_trained.gif)
+|DQN|![cartpole untrained](/assets/cartpole_untrained.gif)  | ![cartpole trained](/assets/cartpole_trained.gif)
+|CEM|![cartpole untrained](/assets/cem_untrained.gif)  | ![cartpole trained](/assets/cem_trained.gif)
 
 pytorch-rl is a python package based on pytorch library which aims to build standard deep reinforcement learning agent for the user to build various algorithms around it. pytorch-rl also includes some of the state-of-the-art implementations of popular deep reinforcement learning. 
 ## Installation

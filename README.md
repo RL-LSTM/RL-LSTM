@@ -34,5 +34,5 @@ python examples/ddpg_cartpole.py
 Agents implemeted currently
 - [x] DDPG 
 - [x] DDQN
-- [ ] Duel DQN
-- [ ] CEM
+- [x] Duel DQN
+- [x] CEM

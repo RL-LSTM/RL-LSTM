@@ -30,9 +30,12 @@ python examples/ddpg_pendulum.py
 ```
 python examples/ddpg_cartpole.py
 ```
-## TODO
 Agents implemeted currently
 - [x] DDPG 
 - [x] DDQN
 - [x] Duel DQN
 - [x] CEM
+- [x] PPO(needs to be tested) 
+- [x] ACKTR(needs to be tested) 
+- [x] A2C(needs to be tested)
+

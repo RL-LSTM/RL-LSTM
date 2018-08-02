@@ -83,12 +83,14 @@ class DDQNAgent:
 					critic_output = self.target_critic(s2_batch)
 					critic_output_model = self.critic(s2_batch)
 					arg_out = torch.max(critic_output_model,1)[1]
-					arg_out = arg_out.data.numpy().astype(int)
+					arg_out = arg_out.data.cpu().numpy().astype(int)
 					index_range = np.arange(self.batch_size)
 					index_range = np.reshape(index_range,(1, self.batch_size))			
 					critic_output =  critic_output[index_range,arg_out]
 					critic_output = critic_output.data.cpu().numpy()
-					y = r_batch + self.gamma * critic_output.T * ~t_batch					
+					# y = r_batch + self.gamma * critic_output.T * ~t_batch # doesnt work becuase of transpose on old version was also without transpose
+					# we need to decide if transpose is correct , for now we remove it to continue work on visdom
+					y = r_batch + self.gamma * critic_output * ~t_batch
 					s_batch = torch.from_numpy(s_batch)
 					s_batch = Variable(s_batch.type(torch.FloatTensor),requires_grad=True)
 					a_batch = torch.from_numpy(a_batch)

@@ -44,7 +44,7 @@ class CriticNetwork(nn.Module):
 	def train(self, states, actions, y):
 		self.optimizer.zero_grad()
 		q_value = self.forward(states)
-		actions = actions.data.numpy().astype(int)
+		actions = actions.data.cpu().numpy().astype(int)
 		range_array = np.array(range(self.batch_size))
 		q_value = q_value[:, actions]
 		loss = self.loss_fn(q_value,y)

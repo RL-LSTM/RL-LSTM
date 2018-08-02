@@ -2,7 +2,7 @@ import numpy as np
 import itertools
 import scipy.misc
 import matplotlib.pyplot as plt
-
+import visdom
 
 def main():
     env = gameEnv(size=5,startDelay=2)
@@ -78,6 +78,8 @@ class gameEnv():
         class ActionSpace():
             def __init__(self):
                 self.n = 4
+
+        self.vis = visdom.Visdom()
         self.action_space = ActionSpace()
         self.sizeX = size
         self.sizeY = size
@@ -258,8 +260,10 @@ class gameEnv():
         # show curent step
         plt.imshow(state, interpolation="nearest")
         plt.title("Score: {0}, Reward: {1}, GameOver: {2}".format(float(self.getScore()), float(self.reward), self.done))
-        plt.draw()
-        plt.show(block=False)
+        # plt.draw()
+        # plt.show(block=False)
+        self.vis.matplot(plt,win=1)
+        # self.vis.text("Score: {0}, Reward: {1}, GameOver: {2}".format(float(self.getScore()), float(self.reward), self.done))
         # plt.hold(True)
 
     def step(self, action):

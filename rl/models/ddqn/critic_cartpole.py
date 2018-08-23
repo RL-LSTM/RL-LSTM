@@ -50,6 +50,7 @@ class CriticNetwork(nn.Module):
 		loss = self.loss_fn(q_value,y)
 		loss.backward()
 		self.optimizer.step()
+		# TODO WTF loss2 important to?
 		q_value = self.forward(states)
 		q_value = q_value[:, actions]
 		loss2 = self.loss_fn(q_value,y)						

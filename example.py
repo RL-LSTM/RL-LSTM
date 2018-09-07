@@ -20,7 +20,6 @@ from rl.models.ddqn import CriticNetwork
 from rl.common.replaybuffer import ReplayBuffer
 
 from GridWorldSimon import gameEnv
-#%%
 
 def main(args):
     CUDA = torch.cuda.is_available()

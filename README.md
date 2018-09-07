@@ -39,3 +39,8 @@ Agents implemeted currently
 - [x] ACKTR(needs to be tested) 
 - [x] A2C(needs to be tested)
 
+## papers
+dqn lstm algorithm pseudo code
+https://v2.overleaf.com/read/ngpcwbzsjfwy
+
+

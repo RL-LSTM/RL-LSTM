@@ -60,7 +60,7 @@ if __name__ == '__main__':
     parser.add_argument('--seed', type=int, default=1234, help='random seed to use. Default=1234')
     parser.add_argument('--tau', type=float, default=0.001, help='adaptability')
     parser.add_argument('--learning_rate', type=float, default=0.001, help='critic learning rate')
-    parser.add_argument('--batch_size', type=int, default=64, help='critic learning rate')
+    parser.add_argument('--batch_size', type=int, default=1, help='critic learning rate')
     parser.add_argument('--bufferlength', type=float, default=2000, help='buffer size in replay buffer')
     parser.add_argument('--l2_decay', type=float, default=0.01, help='weight decay')
     parser.add_argument('--gamma', type=float, default=0.99, help='discount factor')

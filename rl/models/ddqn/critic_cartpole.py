@@ -6,7 +6,7 @@ import torch.nn.functional as F
 import torch.nn.init as weight_init
 
 class CriticNetwork(nn.Module):
-	def __init__(self, state_dim, action_dim, learning_rate, epsilon, seed, batch_size, tau, nhid = 300):
+	def __init__(self, state_dim, action_dim, learning_rate, epsilon, seed, batch_size = 1, tau = 0.001, nhid = 300, nlayers = 1):
 		self.state_dim = state_dim
 		self.action_dim = action_dim
 		self.learning_rate = learning_rate 
@@ -17,6 +17,7 @@ class CriticNetwork(nn.Module):
 		self.duel_enable = False
 		self.duel_type = False
 		self.nhid = nhid
+		self.nlayers = nlayers
 
 		super(CriticNetwork, self).__init__()
 	
@@ -78,8 +79,8 @@ class CriticNetwork(nn.Module):
 
 	def init_hidden(self, bsz):
 		weight = next(self.parameters())
-		return (weight.new_zeros(self.nlayers, bsz, self.nhid),
-					weight.new_zeros(self.nlayers, bsz, self.nhid))
+		return (weight.new_zeros(bsz, self.nhid),
+					weight.new_zeros(bsz, self.nhid))
 
 	def init_lstmCellWeights(self):
 		# the xavier initialization here is different than the one at the original code of critic_cartpole.

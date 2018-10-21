@@ -65,7 +65,7 @@ if __name__ == '__main__':
     parser.add_argument('--l2_decay', type=float, default=0.01, help='weight decay')
     parser.add_argument('--gamma', type=float, default=0.99, help='discount factor')
     parser.add_argument('--episode_len', type=int, default=1000, help='episodic lengths')
-    parser.add_argument('--episode_steps', type=int, default=1000, help='steps per episode')
+    parser.add_argument('--episode_steps', type=int, default=10, help='steps per episode')
     parser.add_argument('--epsilon', type=float, default=0.01, help='noide standard deviation')
     parser.add_argument('--epsilon_decay', type=float, default=0.999, help='noide standard deviation')
     parser.add_argument('--is_train', type=bool, default=True, help='train mode or test mode. Default is test mode')

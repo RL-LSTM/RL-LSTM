@@ -18,7 +18,7 @@ import torch.nn.init as weight_init
 from torch.autograd import Variable
 
 class DDQNAgent:
-    def __init__(self, critic, replay_buffer, episode_len = 1000, episode_steps=1000, epsilon = 0.01,
+    def __init__(self, critic, replay_buffer, episode_len = 1000, episode_steps=200, epsilon = 0.01,
             epsilon_decay = 0.999, batch_size = 1, gamma = 0.99, seed = 1234, t_update = 5):
         self.critic = copy.deepcopy(critic)
         self.target_critic = copy.deepcopy(critic)
@@ -56,7 +56,11 @@ class DDQNAgent:
             env.seed(self.seed + i)
             s = env.reset()
             terminal = False
+            step_counter = 0
             while not terminal:
+                if step_counter > self.episode_steps:
+                    break
+                step_counter = step_counter + 1
                 env.render()
                 input_state  = np.reshape(s, (1, self.critic.state_dim))
                 input_state = torch.from_numpy(input_state)
@@ -82,11 +86,11 @@ class DDQNAgent:
                 #     s_batch, a_batch, r_batch, t_batch, s2_batch = self.replay_buffer.sample_batch(self.batch_size)
                 #     s2_batch = torch.from_numpy(s2_batch)
                 #     s2_batch = Variable(s2_batch.type(torch.FloatTensor),requires_grad=False)
-                s_batch = np.reshape(s, (self.critic.state_dim,))
-                a_batch = a
-                r_batch = r
-                t_batch = terminal
-                s2_batch = np.reshape(s2, (self.critic.state_dim,))
+                s_batch = np.reshape(s, (1,self.critic.state_dim))
+                a_batch = np.array([a])
+                r_batch = np.array([r])
+                t_batch = np.array([terminal])
+                s2_batch = np.reshape(s2, (1,self.critic.state_dim))
                 s2_batch = torch.from_numpy(s2_batch)
                 s2_batch =  Variable(s2_batch.type(torch.FloatTensor),requires_grad=False)
                 if CUDA:
@@ -114,7 +118,10 @@ class DDQNAgent:
                     s_batch = s_batch.cuda()
                     a_batch = a_batch.cuda()
                     y = y.cuda()
-                self.critic.train(s_batch, a_batch, y)
+                retain_graph = True
+                # if np.mod(i+1, self.t_update) == 0:
+                #     retain_graph =False
+                self.critic.train(s_batch, a_batch, y, retain_graph)
 
                 # else:
                 #     loss = 0
@@ -122,7 +129,7 @@ class DDQNAgent:
                 s = s2
                 if terminal:
                     break
-            if np.mod(i,self.t_update) == 0:
+            if np.mod(i+1,self.t_update) == 0:
                 self.target_critic = copy.deepcopy(self.critic)
 
     def test(self, env):

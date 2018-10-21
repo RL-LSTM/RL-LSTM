@@ -57,14 +57,14 @@ class CriticNetwork(nn.Module):
 		return y
 
 
-	def train(self, states, actions, y):
+	def train(self, states, actions, y, retain_graph=True):
 		self.optimizer.zero_grad()
 		q_value = self.forward(states)
 		actions = actions.data.cpu().numpy().astype(int)
 		range_array = np.array(range(self.batch_size))
 		q_value = q_value[:, actions]
 		loss = self.loss_fn(q_value,y)
-		loss.backward()
+		loss.backward(retain_graph=retain_graph) # TODO - might remove retain_graph in the future to save RAM
 		self.optimizer.step()
 		# TODO WTF loss2 important to?
 		q_value = self.forward(states)

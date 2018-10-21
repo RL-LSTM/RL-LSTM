@@ -58,19 +58,24 @@ class CriticNetwork(nn.Module):
 
 
 	def train(self, states, actions, y, retain_graph=True):
-		self.optimizer.zero_grad()
+		# self.optimizer.zero_grad()
 		q_value = self.forward(states)
 		actions = actions.data.cpu().numpy().astype(int)
 		range_array = np.array(range(self.batch_size))
 		q_value = q_value[:, actions]
 		loss = self.loss_fn(q_value,y)
 		loss.backward(retain_graph=retain_graph) # TODO - might remove retain_graph in the future to save RAM
-		self.optimizer.step()
+		# self.optimizer.step() # TODO move step to end of episode and zero_grad to start of episode.
 		# TODO WTF loss2 important to?
 		q_value = self.forward(states)
 		q_value = q_value[:, actions]
 		loss2 = self.loss_fn(q_value,y)						
+		# self.optimizer.zero_grad()
+
+	def optimizerStep(self):
+		self.optimizer.step()
 		self.optimizer.zero_grad()
+
 
 	def update_target_weights(self, critic):
 
@@ -78,7 +83,7 @@ class CriticNetwork(nn.Module):
 			weight.data = (1-self.tau)*weight.data +  (self.tau)*target_weight.data
 
 	def init_hidden(self, bsz):
-		weight = next(self.parameters())
+		weight = next(self.parameters()) # TODO convert tuple to tuple of tensors or delete hidden before deepcopy
 		return (weight.new_zeros(bsz, self.nhid),
 					weight.new_zeros(bsz, self.nhid))
 

@@ -58,9 +58,7 @@ class DDQNAgent:
             terminal = False
             step_counter = 0
             while not terminal:
-                if step_counter > self.episode_steps:
-                    break
-                step_counter = step_counter + 1
+
                 env.render()
                 input_state  = np.reshape(s, (1, self.critic.state_dim))
                 input_state = torch.from_numpy(input_state)
@@ -127,10 +125,14 @@ class DDQNAgent:
                 #     loss = 0
 
                 s = s2
+                if step_counter > self.episode_steps:
+                    terminal = True
+                step_counter = step_counter + 1
                 if terminal:
+                    self.critic.optimizerStep()
+                    self.target_critic = copy.deepcopy(self.critic)
                     break
-            if np.mod(i+1,self.t_update) == 0:
-                self.target_critic = copy.deepcopy(self.critic)
+            # if np.mod(i+1,self.t_update) == 0:
 
     def test(self, env):
         CUDA = torch.cuda.is_available()

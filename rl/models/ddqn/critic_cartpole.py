@@ -31,9 +31,11 @@ class CriticNetwork(nn.Module):
 		self.layer2.weight.data.uniform_(-math.sqrt(6./n), math.sqrt(6./n))
 
 		# RL-LSTM
-		self.layerLSTM = torch.nn.LSTMCell(24,nhid,bias=True)
-		self.hiddenLSTM = self.init_hidden(self.batch_size)
-		self.init_lstmCellWeights()
+		self.layerLSTM = nn.LSTM(24,nhid)
+		# self.hiddenLSTM = self.init_hidden(self.batch_size)
+		self.h_t = (torch.zeros(1,batch_size,self.nhid),
+					torch.zeros(1, batch_size, self.nhid))
+		# self.init_lstmCellWeights()
 		self.layerLinearPostLSTM = nn.Linear(nhid,24)
 		n = weight_init._calculate_fan_in_and_fan_out(self.layerLinearPostLSTM.weight)[0]
 		torch.manual_seed(self.seed)
@@ -51,8 +53,10 @@ class CriticNetwork(nn.Module):
 	def forward(self, x):
 		y = F.relu(self.layer1(x))
 		y = F.relu(self.layer2(y))
-		self.hiddenLSTM = self.layerLSTM(y,self.hiddenLSTM)
-		y = F.relu(self.layerLinearPostLSTM(self.hiddenLSTM[0]))
+		lstm_out,tmp_h_t= self.layerLSTM(y.view(1,1,-1),self.h_t)
+		self.h_t[0].data = tmp_h_t[0].data
+		self.h_t[1].data = tmp_h_t[1].data
+		y = F.relu(self.layerLinearPostLSTM(lstm_out[0,:,:]))
 		y = self.layer3(y)
 		return y
 
@@ -83,9 +87,9 @@ class CriticNetwork(nn.Module):
 			weight.data = (1-self.tau)*weight.data +  (self.tau)*target_weight.data
 
 	def init_hidden(self, bsz):
-		weight = next(self.parameters()) # TODO convert tuple to tuple of tensors or delete hidden before deepcopy
-		return (weight.new_zeros(bsz, self.nhid),
-					weight.new_zeros(bsz, self.nhid))
+		# weight = next(self.parameters()) # TODO convert tuple to tuple of tensors or delete hidden before deepcopy
+		return (torch.zeros(1,bsz, self.nhid),
+				torch.zeros(1,bsz, self.nhid))
 
 	def init_lstmCellWeights(self):
 		# the xavier initialization here is different than the one at the original code of critic_cartpole.
